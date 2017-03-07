@@ -1,0 +1,90 @@
+body {
+            font-family: sans-serif;
+        }
+        .main-block {
+            width: 100%;
+            margin: 0 auto;
+            text-align: center;
+            max-width: 700px;
+        }
+
+        button {
+            border: none;
+            background: #0090ff;
+            color: #fff;
+            font-weight: bold;
+            text-transform: uppercase;
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+            display: none;
+        }
+
+        input#imagefield {
+            display: block;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            position: absolute;
+            width: 100%;
+            opacity: 0;
+            cursor: pointer;
+            z-index: 999;
+        }
+        .image-drop-field {
+            display: block;
+            width: 80%;
+            margin: 0 auto;
+            background: #43484f;
+            height: 380px;
+            margin-top: 30px;
+            border: 5px dashed #0090ff;
+            opacity: 0.5;
+            position: relative;
+        }
+        .results-block {
+            margin-top: 20px;
+        }
+
+        img {
+            max-width: 80%;
+        }
+        .image-drop-field:hover {
+            opacity: 1;
+        }
+        #outImage {
+            position: absolute;
+            top: 50%;
+            right: 0;
+            bottom: 0;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-height: 375px;
+        }
+        .preloader img {
+            margin-top: -95px;
+            margin-bottom: -120px;
+        }
+
+        .preloader span {
+            display: block;
+            color: #414143;
+        }
+        .preloader {
+            display: none;
+        }
+        .wiki-text {
+            text-align: left;
+            /* color: #212121; */
+        }
+
+        .wiki-text a {
+            color: #0090ff;
+        }
+        .drop-caption {
+            position: absolute;
+            top: 84px;
+            font-size: 21px;
+            padding: 50px;
+        }

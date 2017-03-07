@@ -1,0 +1,130 @@
+html
+  head
+    title Распознать картину по фото
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js")
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    link(rel="stylesheet", href="https://bootswatch.com/darkly/bootstrap.min.css")
+    link(rel="stylesheet", href="/css/style.css")
+  body
+    nav.navbar.navbar-default
+          .container-fluid
+            .navbar-header
+              button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#bs-example-navbar-collapse-1')
+                span.sr-only Toggle navigation
+                span.icon-bar
+                span.icon-bar
+                span.icon-bar
+              a.navbar-brand(href='#') Распознавание изображений
+            #bs-example-navbar-collapse-1.collapse.navbar-collapse
+              ul.nav.navbar-nav
+                li
+                  a(href='http://grishazhdanov.ru/' target="_blank")
+                    | Автор
+
+    .main-block
+       form(action="/" method="post" enctype="multipart/form-data")
+        .image-drop-field
+            .drop-caption
+                p Перенесите сюда картинку, для того чтобы распознать или кликните для выбора картинки из памяти устройства
+            input#imagefield(name="file" type="file" accept="image/jpeg")
+            img#outImage(src="", alt="")
+        //button#openfile(type="button") Выбрать фото
+        .preloader
+            img(src="http://2.bp.blogspot.com/-u2ibzymo5Jo/VjtDPbaP07I/AAAAAAAAiDI/DD0ROOQIqgY/s1600/54f4ca1edced7ed62ba934b4_infinite-gif-preloader.gif", alt="")
+            span Загрузка фото...
+        br
+        br
+        button(type="submit") Распознать
+        .results-block
+            img(src="", alt="")
+            h2
+            h3
+            .wiki-text
+   script.
+    (function(){
+      $('#openfile').on('click', function() {
+        $('#imagefield').click();
+      })
+
+      $('form').on('submit', function() {
+        var form = $(this);
+        var data = new FormData();
+        jQuery.each(jQuery('#imagefield')[0].files, function(i, file) {
+            data.append('file-'+i, file);
+        });
+        jQuery.ajax({
+            url: '/',
+            data: data,
+            cache: false,
+            contentType: false,
+            processData: false,
+            type: 'POST',
+            success: function(data){
+                console.log(data);
+                if (typeof data != "string") {
+                    $('.results-block img').attr('src', "/"+data.name+"@"+data.painter+".jpg");
+                    $('.results-block h2').text(data.name);
+                    $('.results-block h3').text(data.painter);
+                } else {
+                    $('.results-block img').attr('src', "");
+                    $('.results-block h2').text('Не удалось распознать');
+                    $('.results-block h3').text("");
+                }
+            }
+        });
+        return false;
+      })
+      document.getElementById('imagefield').onchange = function (evt) {
+            var tgt = evt.target || window.event.srcElement,
+                files = tgt.files;
+            $('.drop-caption').hide();
+            // FileReader support
+            if (FileReader && files && files.length) {
+                var fr = new FileReader();
+                fr.onload = function () {
+                    document.getElementById('outImage').src = fr.result;
+                    //console.log(fr.result);
+                    $('.image-drop-field').css('opacity', '1');
+                    var data = new FormData();
+                    jQuery.each(jQuery('#imagefield')[0].files, function(i, file) {
+                        data.append('file-'+i, file);
+                    });
+                    $('.preloader').show();
+                    $('.results-block img').attr('src', "");
+                    $('.results-block h2').text('');
+                    $('.results-block h3').text("");
+                    jQuery.ajax({
+                        url: '/',
+                        data: data,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        type: 'POST',
+                        success: function(data){
+                            console.log(data);
+                            $('.preloader').hide();
+                            if (typeof data != "string") {
+                                $('.results-block img').attr('src', "/"+data.name+"@"+data.painter+".jpg");
+                                $('.results-block h2').text(data.name);
+                                $('.results-block h3').text(data.painter);
+                                $('.wiki-text').html(data.wiki);
+
+                            } else {
+                                $('.results-block img').attr('src', "");
+                                $('.results-block h2').text('Не удалось распознать');
+                                $('.results-block h3').text("");
+
+                            }
+                        }
+                    });
+                }
+                fr.readAsDataURL(files[0]);
+            }
+
+            // Not supported
+            else {
+                // fallback -- perhaps submit the input to an iframe and temporarily store
+                // them on the server until the user's session ends.
+            }
+        }
+    }());
