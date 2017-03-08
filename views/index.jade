@@ -72,6 +72,7 @@ html
                                 $('.results-block h2').text(data.name);
                                 $('.results-block h3').text(data.painter);
                                 $('.wiki-text').html(data.wiki);
+                                $j('html, body').animate({ scrollTop: $j(".results-block").offset().top }, 1500);
             });
         })
       $('#openfile').on('click', function() {
