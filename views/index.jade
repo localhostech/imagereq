@@ -153,6 +153,7 @@ html
                     $('.results-block img').attr('src', "");
                     $('.results-block h2').text('');
                     $('.results-block h3').text("");
+                    $('.wiki-text').html("");
                     jQuery.ajax({
                         url: '/',
                         data: data,
@@ -168,7 +169,7 @@ html
                                 $('.results-block h2').text(data.name);
                                 $('.results-block h3').text(data.painter);
                                 $('.wiki-text').html(data.wiki);
-                                $('.wiki-text').append('<a href="https://www.google.ru/search?q=%D0%BF%D1%80%D0%B8%D0%B2%D0%B5%D1%82" target="_blank">Результаты поиска Google</a>')
+                                $('.wiki-text').append('<a href="https://www.google.ru/search?q='+data.name+' '+data.painter+'" target="_blank">Результаты поиска Google</a>')
                                 $('html, body').animate({ scrollTop: $(".results-block").offset().top }, 500);
 
                             } else {
