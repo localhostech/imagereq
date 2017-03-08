@@ -28,6 +28,9 @@ html
                 li
                   a(href='https://github.com/localhostech/imagereq' target="_blank")
                     | Исходный код
+              ul.nav.navbar-nav.navbar-right
+                  li
+                    a(href='#' data-toggle="modal" data-target="#suggestModal") Предложить изображение
 
     .main-block
        .image-slider
@@ -51,6 +54,27 @@ html
             h2
             h3
             .wiki-text
+    #suggestModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel')
+      .modal-dialog(role='document')
+        .modal-content
+          .modal-header
+            button.close(type='button', data-dismiss='modal', aria-label='Close')
+              span(aria-hidden='true') ×
+            h4#myModalLabel.modal-title Предложить изображение
+          .modal-body
+            i Функция недоступна в данный момент :( 
+            .form-group
+              label.control-label(for='inputTitle') Заголовок
+              input#inputTitle.form-control(type='text' disabled)
+            .form-group
+              label.control-label(for='inputAuthor') Автор
+              input#inputAuthor.form-control(type='text' disabled)
+            .form-group
+              label.control-label(for='inputFile') Изображение
+              input#inputFile.form-control(type='file' name="file" disabled)
+          .modal-footer
+            button.btn.btn-default(type='button', data-dismiss='modal') Закрыть
+            button.btn.btn-primary(type='button' disabled) Отправить
    script.
     $('.image-slider').slick({
           dots: false,
