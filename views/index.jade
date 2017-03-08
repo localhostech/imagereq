@@ -33,13 +33,14 @@ html
                     a(href='#' data-toggle="modal" data-target="#suggestModal") Предложить изображение
 
     .main-block
+       h3.text-center Известные мне картины
        .image-slider
             each image in images
                 img(src='/'+image.name+'@'+image.painter+'.jpg', alt=image.name+' '+image.painter title=image.name+' '+image.painter data-image=image.id)
        form(action="/" method="post" enctype="multipart/form-data")
         .image-drop-field
             .drop-caption
-                p Перенесите сюда картинку, для того чтобы распознать или кликните для выбора картинки из памяти устройства
+                p Кликните для выбора изображения из памяти устройства
             input#imagefield(name="file" type="file" accept="image/jpeg")
             img#outImage(src="", alt="")
         //button#openfile(type="button") Выбрать фото
@@ -96,7 +97,8 @@ html
                                 $('.results-block h2').text(data.name);
                                 $('.results-block h3').text(data.painter);
                                 $('.wiki-text').html(data.wiki);
-                                $('html, body').animate({ scrollTop: $(".results-block").offset().top }, 1500);
+                                $('.wiki-text').append('<a href="https://www.google.ru/search?q='+data.name+' '+data.painter+'" target="_blank">Результаты поиска Google</a>')
+                                $('html, body').animate({ scrollTop: $(".results-block").offset().top }, 500);
             });
         })
       $('#openfile').on('click', function() {
@@ -122,7 +124,7 @@ html
                     $('.results-block img').attr('src', "/"+data.name+"@"+data.painter+".jpg");
                     $('.results-block h2').text(data.name);
                     $('.results-block h3').text(data.painter);
-                    $('html, body').animate({ scrollTop: $(".results-block").offset().top }, 1500);
+                    $('html, body').animate({ scrollTop: $(".results-block").offset().top }, 500);
                 } else {
                     $('.results-block img').attr('src', "");
                     $('.results-block h2').text('Не удалось распознать');
@@ -166,7 +168,8 @@ html
                                 $('.results-block h2').text(data.name);
                                 $('.results-block h3').text(data.painter);
                                 $('.wiki-text').html(data.wiki);
-                                $('html, body').animate({ scrollTop: $(".results-block").offset().top }, 1500);
+                                $('.wiki-text').append('<a href="https://www.google.ru/search?q=%D0%BF%D1%80%D0%B8%D0%B2%D0%B5%D1%82" target="_blank">Результаты поиска Google</a>')
+                                $('html, body').animate({ scrollTop: $(".results-block").offset().top }, 500);
 
                             } else {
                                 $('.results-block img').attr('src', "");
