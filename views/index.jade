@@ -72,7 +72,7 @@ html
                                 $('.results-block h2').text(data.name);
                                 $('.results-block h3').text(data.painter);
                                 $('.wiki-text').html(data.wiki);
-                                $('html, body').animate({ scrollTop: $j(".results-block").offset().top }, 1500);
+                                $('html, body').animate({ scrollTop: $(".results-block").offset().top }, 1500);
             });
         })
       $('#openfile').on('click', function() {
@@ -98,7 +98,7 @@ html
                     $('.results-block img').attr('src', "/"+data.name+"@"+data.painter+".jpg");
                     $('.results-block h2').text(data.name);
                     $('.results-block h3').text(data.painter);
-                    $('html, body').animate({ scrollTop: $j(".results-block").offset().top }, 1500);
+                    $('html, body').animate({ scrollTop: $(".results-block").offset().top }, 1500);
                 } else {
                     $('.results-block img').attr('src', "");
                     $('.results-block h2').text('Не удалось распознать');
@@ -142,7 +142,7 @@ html
                                 $('.results-block h2').text(data.name);
                                 $('.results-block h3').text(data.painter);
                                 $('.wiki-text').html(data.wiki);
-                                $('html, body').animate({ scrollTop: $j(".results-block").offset().top }, 1500);
+                                $('html, body').animate({ scrollTop: $(".results-block").offset().top }, 1500);
 
                             } else {
                                 $('.results-block img').attr('src', "");
