@@ -20,6 +20,7 @@ var path = require('path'),
     multiparty = require('multiparty');
 
 var database;
+const inputFolder = './input/';
 
 fs.readFile("./database.json", "utf8", function(err, data) {
 	if (err) {
@@ -40,7 +41,7 @@ app.set('view engine', 'jade');
 app.use(bodyParser.urlencoded({ extended: false }))
 
 app.get('/', function (req, res) {
-  res.render('index', {});
+  res.render('index', {images: database});
 });
 
 app.post('/', function(req, res) {
@@ -68,6 +69,7 @@ app.post('/', function(req, res) {
 				console.log(imageId);
 				console.log(database[imageId]);
 				var wikioptions = {query:  database[imageId].name, format: "html", summaryOnly: true};
+				if (!database[imageId].wiki) {
 				wikipedia.searchArticle(wikioptions, function(err, htmlWikiText) {
 				    if (err) {
 				      console.log("An error occurred[query=%s, error=%s]", query, err);
@@ -78,17 +80,39 @@ app.post('/', function(req, res) {
 				    res.send(database[imageId]);
 				    }
 				);
+				} else {
+					res.send(database[imageId]);
+				}
 				  
 			} else {
 				console.log('No results');
 				res.send('No results');
 			}
-		} else {
+				} else {
 				console.log('No results');
 				res.send('No results');
 			} 
 	}
 });
+app.get('/getImage', function(req, res) {
+	console.log(req.query);
+	//res.send(database[req.query.id]);
+	if (!database[req.query.id].wiki) {
+		var wikioptions = {query:  database[req.query.id].name, format: "html", summaryOnly: true};
+					wikipedia.searchArticle(wikioptions, function(err, htmlWikiText) {
+					    if (err) {
+					      console.log("An error occurred[query=%s, error=%s]", query, err);
+					      return;
+					    }
+					    console.log(htmlWikiText);
+					    database[req.query.id].wiki = htmlWikiText;
+					    res.send(database[req.query.id]);
+					    }
+					);
+	} else {
+		res.send(database[req.query.id]);
+	}
+})
 
 app.listen(4400, function () {
   console.log('Example app listening on port 4400!');

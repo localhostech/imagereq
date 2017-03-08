@@ -2,9 +2,13 @@ html
   head
     title Распознать картину по фото
     script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js")
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js")
     meta(name='viewport', content='width=device-width, initial-scale=1.0')
     link(rel="stylesheet", href="https://bootswatch.com/darkly/bootstrap.min.css")
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.js")
     link(rel="stylesheet", href="/css/style.css")
+    link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css")
+    link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css")
   body
     nav.navbar.navbar-default
           .container-fluid
@@ -20,8 +24,14 @@ html
                 li
                   a(href='http://grishazhdanov.ru/' target="_blank")
                     | Автор
+                li
+                  a(href='https://github.com/localhostech/imagereq' target="_blank")
+                    | Исходный код
 
     .main-block
+       .image-slider
+            each image in images
+                img(src='/'+image.name+'@'+image.painter+'.jpg', alt=image.name+' '+image.painter title=image.name+' '+image.painter data-image=image.id)
        form(action="/" method="post" enctype="multipart/form-data")
         .image-drop-field
             .drop-caption
@@ -34,14 +44,35 @@ html
             span Загрузка фото...
         br
         br
-        button(type="submit") Распознать
+        //button(type="submit") Распознать
         .results-block
             img(src="", alt="")
             h2
             h3
             .wiki-text
    script.
+    $('.image-slider').slick({
+          dots: false,
+          infinite: true,
+          speed: 300,
+          slidesToShow: 1,
+          centerMode: true,
+          variableWidth: true,
+          autoplay: true,
+          autoplaySpeed: 2000,
+          arrows: true
+        });
     (function(){
+        $('.image-slider img').on('click', function() {
+            var imageId = $(this).data('image');
+            $.getJSON( "/getImage?id="+imageId, function( data ) {
+              console.log(data)
+                $('.results-block img').attr('src', "/"+data.name+"@"+data.painter+".jpg");
+                                $('.results-block h2').text(data.name);
+                                $('.results-block h3').text(data.painter);
+                                $('.wiki-text').html(data.wiki);
+            });
+        })
       $('#openfile').on('click', function() {
         $('#imagefield').click();
       })
