@@ -20,6 +20,7 @@ var path = require('path'),
     multiparty = require('multiparty');
 
 var database;
+var spec;
 const inputFolder = './input/';
 
 fs.readFile("./database.json", "utf8", function(err, data) {
@@ -28,6 +29,14 @@ fs.readFile("./database.json", "utf8", function(err, data) {
 	} else {
 		console.log(data);
 		database = JSON.parse(data);
+	}
+});
+fs.readFile("./zav.json", "utf8", function(err, data) {
+	if (err) {
+		console.log(err);
+	} else {
+		console.log(data);
+		spec = JSON.parse(data);
 	}
 });
 
@@ -41,7 +50,7 @@ app.set('view engine', 'jade');
 app.use(bodyParser.urlencoded({ extended: false }))
 
 app.get('/', function (req, res) {
-  res.render('index', {images: database});
+  res.render('index', {images: database.slice(25,35)});
 });
 
 app.post('/', function(req, res) {
@@ -77,6 +86,9 @@ app.post('/', function(req, res) {
 				    }
 				    console.log(htmlWikiText);
 				    database[imageId].wiki = htmlWikiText;
+				    if (spec[database[imageId].name]) {
+							database[imageId].spectext = spec[database[imageId].name].text;
+						}
 				    res.send(database[imageId]);
 				    }
 				);
@@ -106,9 +118,13 @@ app.get('/getImage', function(req, res) {
 					    }
 					    console.log(htmlWikiText);
 					    database[req.query.id].wiki = htmlWikiText;
+					    if (spec[database[req.query.id].name]) {
+							database[req.query.id].spectext = spec[database[req.query.id].name].text;
+						}
 					    res.send(database[req.query.id]);
 					    }
 					);
+
 	} else {
 		res.send(database[req.query.id]);
 	}
